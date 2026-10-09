@@ -1,0 +1,11 @@
+[Unit]
+Description=Keyboard backlight auto-toggler for Framework laptops
+After=local-fs.target
+
+[Service]
+Type=simple
+Restart=on-failure
+ExecStart=${PREFIX}/libexec/fw-dpms-kblight
+
+[Install]
+WantedBy=multi-user.target
