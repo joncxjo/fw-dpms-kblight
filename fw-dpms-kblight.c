@@ -114,6 +114,10 @@ set_kblight(
 int
 main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
+    // make stdout and stderr line buffered
+    setvbuf(stdout, NULL, _IOLBF, 0);
+    setvbuf(stderr, NULL, _IOLBF, 0);
+
     int dpms_fd = -1, ec_fd = -1;
     struct cros_ec_command_v2 *ec_cmd = NULL;
     struct ec_params_pwm_set_duty *ec_params = NULL;
