@@ -5,7 +5,7 @@ After=local-fs.target
 [Service]
 Type=simple
 Restart=on-failure
-ExecStart=${PREFIX}/libexec/fw-dpms-kblight
+ExecStart=/usr/local/libexec/fw-dpms-kblight
 
 [Install]
 WantedBy=multi-user.target

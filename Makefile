@@ -14,6 +14,12 @@ PREFIX ?= /usr/local
 
 PROG = fw-dpms-kblight
 
+ifeq ($(PREFIX),/usr/local)
+	systemd_unit_path = /usr/local/lib/systemd/system
+else
+	systemd_unit_path = /etc/systemd/system
+endif
+
 $(PROG):
 	$(CC) $(CFLAGS) $(PROG).c -o $(PROG)
 
@@ -23,14 +29,14 @@ ci:
 install: $(PROG)
 	install -d $(DESTDIR)$(PREFIX)/libexec
 	install -m 755 $(PROG) $(DESTDIR)$(PREFIX)/libexec/$(PROG)
-	install -d $(DESTDIR)/etc/systemd/system
-	PREFIX=$(PREFIX) envsubst < $(PROG).service.template > $(PROG).service
-	install -m 755 $(PROG).service $(DESTDIR)/etc/systemd/system/$(PROG).service
+	install -d $(DESTDIR)$(systemd_unit_path)
+	sed "s#/usr/local/#$(PREFIX)/#g" < $(PROG).service > $(PROG).service.temp
+	install -m 755 $(PROG).service.temp $(DESTDIR)$(systemd_unit_path)/$(PROG).service
 
 uninstall:
-	rm -f $(DESTDIR)/etc/systemd/system/$(PROG).service
-	rm -f $(DESTDIR)$(PREFIX)/libexec/$(PROG)
+	rm -fv $(DESTDIR)$(systemd_unit_path)/$(PROG).service
+	rm -fv $(DESTDIR)$(PREFIX)/libexec/$(PROG)
 
 clean:
-	rm -f $(PROG)
-	rm -f $(PROG).service
+	rm -fv $(PROG)
+	rm -fv $(PROG).service.temp
