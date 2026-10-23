@@ -112,7 +112,7 @@ set_kblight(
 }
 
 int
-main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
+main(void)
 {
     // make stdout and stderr line buffered
     setvbuf(stdout, NULL, _IOLBF, 0);
